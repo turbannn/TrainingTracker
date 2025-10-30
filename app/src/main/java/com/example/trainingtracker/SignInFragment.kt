@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.trainingtracker.databinding.FragmentFirstBinding
+import com.example.trainingtracker.databinding.FragmentSignInBinding
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * Sign In Fragment - allows users to sign in
  */
-class FirstFragment : Fragment() {
+class SignInFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentSignInBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,7 +24,7 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentSignInBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -32,8 +32,14 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        // Sign In button placeholder
+        binding.buttonSignInSubmit.setOnClickListener {
+            // TODO: Implement sign in logic
+        }
+
+        // Navigate to Sign Up
+        binding.textviewSignUpLink.setOnClickListener {
+            findNavController().navigate(R.id.action_SignInFragment_to_SignUpFragment)
         }
     }
 

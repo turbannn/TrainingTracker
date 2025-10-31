@@ -112,6 +112,9 @@ class SignUpFragment : Fragment() {
                             .document(it.uid)
                             .set(user)
                             .addOnSuccessListener {
+                                // Save user to session
+                                UserSession.saveUser(user)
+                                
                                 Toast.makeText(
                                     requireContext(),
                                     "Registration successful!",

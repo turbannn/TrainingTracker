@@ -56,7 +56,29 @@
         android:id="@+id/TrainingsListFragment"
         android:name="com.example.trainingtracker.TrainingsListFragment"
         android:label="Trainings"
-        tools:layout="@layout/fragment_trainings_list" />
+        tools:layout="@layout/fragment_trainings_list">
+        
+        <action
+            android:id="@+id/action_TrainingsListFragment_to_AddTrainingFragment"
+            app:destination="@id/AddTrainingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddTrainingFragment"
+        android:name="com.example.trainingtracker.AddTrainingFragment"
+        android:label="Add Training"
+        tools:layout="@layout/fragment_add_training" />
+
+    <fragment
+        android:id="@+id/TrainingDetailFragment"
+        android:name="com.example.trainingtracker.TrainingDetailFragment"
+        android:label="Training Details"
+        tools:layout="@layout/fragment_training_detail">
+        
+        <argument
+            android:name="trainingId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/StatisticsFragment"

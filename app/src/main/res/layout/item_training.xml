@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Status Icon -->
+        <ImageView
+            android:id="@+id/imageview_status"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/checkbox_on_background"
+            android:tint="?attr/colorPrimary"
+            android:contentDescription="Status"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Training Date -->
+        <TextView
+            android:id="@+id/textview_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="31/10/2024 14:30"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageview_status"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Status Text -->
+        <TextView
+            android:id="@+id/textview_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:textColor="?attr/colorPrimary"
+            tools:text="Completed"
+            app:layout_constraintTop_toBottomOf="@id/textview_date"
+            app:layout_constraintStart_toEndOf="@id/imageview_status"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@id/imageview_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Exercise Count -->
+        <TextView
+            android:id="@+id/textview_exercises"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@android:drawable/ic_menu_agenda"
+            tools:text="5 exercises"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Duration -->
+        <TextView
+            android:id="@+id/textview_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@android:drawable/ic_menu_recent_history"
+            tools:text="10m 30s"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

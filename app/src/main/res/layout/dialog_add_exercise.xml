@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Exercise Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_exercise_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Exercise Name"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittext_exercise_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Sets -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_sets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="Number of Sets (optional)"
+        app:boxBackgroundMode="outline"
+        app:helperText="e.g., 3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittext_sets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Repetitions -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_reps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="Repetitions per Set (optional)"
+        app:boxBackgroundMode="outline"
+        app:helperText="e.g., 10, 12, 15">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittext_reps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Duration -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="Duration in seconds (optional)"
+        app:boxBackgroundMode="outline"
+        app:helperText="e.g., 60">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittext_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Info Text -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Fill at least sets/reps or duration"
+        android:textSize="12sp"
+        android:alpha="0.7"
+        android:gravity="center" />
+
+</LinearLayout>

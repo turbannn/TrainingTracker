@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTrainingFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/textview_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Training"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Training Name Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textinput_training_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="Training Name"
+                app:boxBackgroundMode="outline"
+                app:layout_constraintTop_toBottomOf="@id/textview_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edittext_training_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Exercises Section -->
+            <TextView
+                android:id="@+id/textview_exercises_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercises"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/textinput_training_name"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Add Exercise Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_add_exercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Exercise"
+                android:textAllCaps="false"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_marginTop="12dp"
+                app:icon="@android:drawable/ic_input_add"
+                app:layout_constraintTop_toBottomOf="@id/textview_exercises_label"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Exercises RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_exercises"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_exercise"
+                app:layout_constraintTop_toBottomOf="@id/button_add_exercise"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/textview_empty_exercises"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No exercises added yet"
+                android:textSize="14sp"
+                android:alpha="0.6"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/button_add_exercise"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Save Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_save_training"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Save Training"
+                android:textAllCaps="false"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview_exercises"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,4 +10,8 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="dont_have_account">or Don\'t have an account?</string>
     <string name="already_have_account">or Already have an account?</string>
+    
+    <!-- Profile strings -->
+    <string name="user_profile">User Profile</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.trainingtracker
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,11 +10,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import com.example.trainingtracker.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +30,56 @@ class MainActivity : AppCompatActivity() {
         UserSession.init(applicationContext)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        
+        // Define top-level destinations (fragments where back button is hidden)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.WelcomeFragment,
+                R.id.TrainingsListFragment,
+                R.id.StatisticsFragment,
+                R.id.UserProfileFragment
+            )
+        )
+        
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Setup Bottom Navigation
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        
+        // Handle Bottom Navigation item clicks
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_trainings -> {
+                    navController.navigate(R.id.TrainingsListFragment)
+                    true
+                }
+                R.id.navigation_statistics -> {
+                    navController.navigate(R.id.StatisticsFragment)
+                    true
+                }
+                R.id.navigation_profile -> {
+                    navController.navigate(R.id.UserProfileFragment)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // Hide/show bottom navigation based on current destination
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.WelcomeFragment,
+                R.id.SignInFragment,
+                R.id.SignUpFragment -> {
+                    // Hide bottom navigation on auth screens
+                    bottomNavigationView.visibility = View.GONE
+                }
+                else -> {
+                    // Show bottom navigation on main app screens
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

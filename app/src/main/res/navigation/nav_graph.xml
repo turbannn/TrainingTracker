@@ -28,6 +28,11 @@
         <action
             android:id="@+id/action_SignInFragment_to_SignUpFragment"
             app:destination="@id/SignUpFragment" />
+        <action
+            android:id="@+id/action_SignInFragment_to_TrainingsListFragment"
+            app:destination="@id/TrainingsListFragment"
+            app:popUpTo="@id/WelcomeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -39,5 +44,37 @@
         <action
             android:id="@+id/action_SignUpFragment_to_SignInFragment"
             app:destination="@id/SignInFragment" />
+        <action
+            android:id="@+id/action_SignUpFragment_to_TrainingsListFragment"
+            app:destination="@id/TrainingsListFragment"
+            app:popUpTo="@id/WelcomeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+
+    <!-- Main app fragments with bottom navigation -->
+    <fragment
+        android:id="@+id/TrainingsListFragment"
+        android:name="com.example.trainingtracker.TrainingsListFragment"
+        android:label="Trainings"
+        tools:layout="@layout/fragment_trainings_list" />
+
+    <fragment
+        android:id="@+id/StatisticsFragment"
+        android:name="com.example.trainingtracker.StatisticsFragment"
+        android:label="Statistics"
+        tools:layout="@layout/fragment_statistics" />
+
+    <fragment
+        android:id="@+id/UserProfileFragment"
+        android:name="com.example.trainingtracker.UserProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_user_profile">
+
+        <action
+            android:id="@+id/action_UserProfileFragment_to_WelcomeFragment"
+            app:destination="@id/WelcomeFragment"
+            app:popUpTo="@id/WelcomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
 </navigation>

@@ -121,8 +121,8 @@ class SignUpFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 
-                                // Navigate to sign in or main screen
-                                findNavController().navigate(R.id.action_SignUpFragment_to_SignInFragment)
+                                // Navigate to main app screen (Trainings List)
+                                findNavController().navigate(R.id.action_SignUpFragment_to_TrainingsListFragment)
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(

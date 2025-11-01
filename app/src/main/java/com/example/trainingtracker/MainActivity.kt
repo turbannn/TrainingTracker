@@ -50,15 +50,21 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_trainings -> {
-                    navController.navigate(R.id.TrainingsListFragment)
+                    if (navController.currentDestination?.id != R.id.TrainingsListFragment) {
+                        navController.navigate(R.id.TrainingsListFragment)
+                    }
                     true
                 }
                 R.id.navigation_statistics -> {
-                    navController.navigate(R.id.StatisticsFragment)
+                    if (navController.currentDestination?.id != R.id.StatisticsFragment) {
+                        navController.navigate(R.id.StatisticsFragment)
+                    }
                     true
                 }
                 R.id.navigation_profile -> {
-                    navController.navigate(R.id.UserProfileFragment)
+                    if (navController.currentDestination?.id != R.id.UserProfileFragment) {
+                        navController.navigate(R.id.UserProfileFragment)
+                    }
                     true
                 }
                 else -> false
@@ -77,6 +83,18 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     // Show bottom navigation on main app screens
                     bottomNavigationView.visibility = View.VISIBLE
+                    
+                    // Update selected item in bottom navigation
+                    val itemId = when (destination.id) {
+                        R.id.TrainingsListFragment -> R.id.navigation_trainings
+                        R.id.StatisticsFragment -> R.id.navigation_statistics
+                        R.id.UserProfileFragment -> R.id.navigation_profile
+                        else -> null
+                    }
+                    
+                    itemId?.let { 
+                        bottomNavigationView.selectedItemId = it
+                    }
                 }
             }
         }

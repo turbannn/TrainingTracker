@@ -1,21 +1,26 @@
 package com.example.trainingtracker
 
 /**
- * Enum for muscle categories
+ * Enum for exercise types
  */
-enum class MuscleCategory(val displayName: String) {
-    CHEST("Chest"),
-    SHOULDERS("Shoulders"),
-    BICEPS("Biceps"),
-    TRICEPS("Triceps"),
-    UPPER_BACK("Upper Back"),
-    LATS("Lats"),
-    CALVES("Calves"),
-    HAMSTRINGS("Hamstrings"),
-    QUADS("Quads");
+enum class ExerciseType(val displayName: String, val isCardio: Boolean) {
+    CHEST("Chest", false),
+    SHOULDERS("Shoulders", false),
+    BICEPS("Biceps", false),
+    TRICEPS("Triceps", false),
+    UPPER_BACK("Upper Back", false),
+    LATS("Lats", false), //lower back
+    CALVES("Calves", false), // ikra
+    HAMSTRINGS("Hamstrings", false), //not quads
+    QUADS("Quads", false), //quads
+    ABS("Abs", false),  // stomach
+    TREADMILL("Treadmill", true),  // run forest run
+    STAIR_CLIMBER("Stair Climber", true),  // climb forest climb
+    OTHER_CARDIO("Other Cardio", true),
+    OTHER("Other", false);  // Default category for existing exercises
 
     companion object {
-        fun fromDisplayName(name: String): MuscleCategory? {
+        fun fromDisplayName(name: String): ExerciseType? {
             return values().find { it.displayName == name }
         }
     }

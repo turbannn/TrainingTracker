@@ -16,30 +16,18 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <!-- Back Button -->
-            <ImageButton
-                android:id="@+id/button_back"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_menu_revert"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Back"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <!-- Title -->
+            <!-- Training Name -->
             <TextView
-                android:id="@+id/textview_title"
+                android:id="@+id/textview_training_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Training Details"
-                android:textSize="24sp"
+                android:text="Training Name"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="?attr/colorPrimary"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@id/button_back"
-                app:layout_constraintBottom_toBottomOf="@id/button_back"
-                app:layout_constraintStart_toEndOf="@id/button_back"
+                tools:text="Morning Workout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- Date Card -->
@@ -50,7 +38,7 @@
                 android:layout_marginTop="24dp"
                 app:cardElevation="4dp"
                 app:cardCornerRadius="12dp"
-                app:layout_constraintTop_toBottomOf="@id/button_back"
+                app:layout_constraintTop_toBottomOf="@id/textview_training_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -195,9 +183,24 @@
                 android:text="Mark as Complete"
                 android:textAllCaps="false"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
                 android:padding="16dp"
                 app:layout_constraintTop_toBottomOf="@id/recyclerview_exercises"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Update Training Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_update_training"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Update Training"
+                android:textAllCaps="false"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:icon="@android:drawable/ic_menu_edit"
+                app:layout_constraintTop_toBottomOf="@id/button_toggle_complete"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />

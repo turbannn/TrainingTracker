@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.example.trainingtracker.databinding.FragmentAddTrainingBinding
+import com.example.trainingtracker.databinding.FragmentUpdateTrainingBinding
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -18,11 +18,11 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Fragment for adding a new training
+ * Fragment for updating an existing training
  */
-class AddTrainingFragment : Fragment() {
+class UpdateTrainingFragment : Fragment() {
 
-    private var _binding: FragmentAddTrainingBinding? = null
+    private var _binding: FragmentUpdateTrainingBinding? = null
     private val binding get() = _binding!!
     
     private lateinit var firestore: FirebaseFirestore
@@ -30,12 +30,15 @@ class AddTrainingFragment : Fragment() {
     private val exercises = mutableListOf<ExerciseWithCategory>()
     private var selectedDate: Date? = null
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    
+    private var trainingId: String? = null
+    private var currentTraining: Training? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddTrainingBinding.inflate(inflater, container, false)
+        _binding = FragmentUpdateTrainingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,25 +48,85 @@ class AddTrainingFragment : Fragment() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
         
-        // Setup date picker
-        setupDatePicker()
+        // Get training ID from arguments
+        trainingId = arguments?.getString("trainingId")
         
         // Setup RecyclerView
         setupRecyclerView()
         
+        // Setup date picker
+        setupDatePicker()
+        
         // Setup buttons
         setupButtons()
         
-        // Update UI
+        // Load training data
+        loadTraining()
+    }
+
+    private fun loadTraining() {
+        if (trainingId == null) {
+            Toast.makeText(requireContext(), "Training not found", Toast.LENGTH_SHORT).show()
+            findNavController().navigateUp()
+            return
+        }
+        
+        // Show loading
+        binding.progressbar.visibility = View.VISIBLE
+        
+        // Load training from Firestore
+        firestore.collection("trainings")
+            .document(trainingId!!)
+            .get()
+            .addOnSuccessListener { document ->
+                binding.progressbar.visibility = View.GONE
+                
+                val training = document.toObject(Training::class.java)
+                if (training != null) {
+                    currentTraining = training
+                    populateTrainingData(training)
+                } else {
+                    Toast.makeText(requireContext(), "Training not found", Toast.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+                }
+            }
+            .addOnFailureListener { e ->
+                binding.progressbar.visibility = View.GONE
+                Toast.makeText(
+                    requireContext(),
+                    "Error loading training: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                findNavController().navigateUp()
+            }
+    }
+
+    private fun populateTrainingData(training: Training) {
+        // Set training name
+        binding.edittextTrainingName.setText(training.name)
+        
+        // Set training date
+        selectedDate = training.trainingDate.toDate()
+        binding.edittextTrainingDate.setText(dateFormat.format(selectedDate!!))
+        
+        // Populate exercises
+        exercises.clear()
+        // Map exercises with their types from the Exercise.type field
+        training.exercises.forEach { exercise ->
+            val exerciseType = ExerciseType.fromDisplayName(exercise.type) ?: ExerciseType.OTHER
+            exercises.add(ExerciseWithCategory(exercise, exerciseType))
+        }
         updateUI()
     }
 
+    private fun setupRecyclerView() {
+        exerciseAdapter = ExerciseAdapter { exerciseWithCategory ->
+            removeExercise(exerciseWithCategory)
+        }
+        binding.recyclerviewExercises.adapter = exerciseAdapter
+    }
+
     private fun setupDatePicker() {
-        // Set today as default date
-        val calendar = Calendar.getInstance()
-        selectedDate = calendar.time
-        binding.edittextTrainingDate.setText(dateFormat.format(selectedDate!!))
-        
         // Open date picker on click
         binding.edittextTrainingDate.setOnClickListener {
             showDatePicker()
@@ -88,17 +151,10 @@ class AddTrainingFragment : Fragment() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         
-        // Restrict to today and future dates only
-        datePickerDialog.datePicker.minDate = System.currentTimeMillis()
+        // Allow past dates for updates
+        // No minDate restriction
         
         datePickerDialog.show()
-    }
-
-    private fun setupRecyclerView() {
-        exerciseAdapter = ExerciseAdapter { exerciseWithCategory ->
-            removeExercise(exerciseWithCategory)
-        }
-        binding.recyclerviewExercises.adapter = exerciseAdapter
     }
 
     private fun setupButtons() {
@@ -109,7 +165,7 @@ class AddTrainingFragment : Fragment() {
         
         // Save Training button
         binding.buttonSaveTraining.setOnClickListener {
-            saveTraining()
+            updateTraining()
         }
     }
 
@@ -255,7 +311,7 @@ class AddTrainingFragment : Fragment() {
         }
     }
 
-    private fun saveTraining() {
+    private fun updateTraining() {
         val trainingName = binding.edittextTrainingName.text.toString().trim()
         
         // Validate training name
@@ -270,40 +326,43 @@ class AddTrainingFragment : Fragment() {
             return
         }
         
-        val userId = UserSession.getUserId()
-        if (userId == null) {
-            Toast.makeText(requireContext(), "Please sign in to save training", Toast.LENGTH_SHORT).show()
+        if (trainingId == null) {
+            Toast.makeText(requireContext(), "Training ID not found", Toast.LENGTH_SHORT).show()
             return
         }
         
-        // Use selected date or current time
+        // Use selected date
         val trainingTimestamp = if (selectedDate != null) {
             Timestamp(selectedDate!!)
         } else {
             Timestamp.now()
         }
         
-        // Create training object
-        val training = Training(
-            name = trainingName,
-            complete = false,
-            trainingDate = trainingTimestamp,
-            exercises = exercises.map { it.exercise },
-            userId = userId
+        // Create updated training data
+        val updates = hashMapOf<String, Any>(
+            "name" to trainingName,
+            "trainingDate" to trainingTimestamp,
+            "exercises" to exercises.map { it.exercise }
         )
         
-        // Save to Firestore
+        // Show loading
+        binding.progressbar.visibility = View.VISIBLE
+        
+        // Update in Firestore
         firestore.collection("trainings")
-            .add(training)
+            .document(trainingId!!)
+            .update(updates)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Training saved successfully!", Toast.LENGTH_SHORT).show()
+                binding.progressbar.visibility = View.GONE
+                Toast.makeText(requireContext(), "Training updated successfully!", Toast.LENGTH_SHORT).show()
                 // Navigate back
                 findNavController().navigateUp()
             }
             .addOnFailureListener { e ->
+                binding.progressbar.visibility = View.GONE
                 Toast.makeText(
                     requireContext(),
-                    "Error saving training: ${e.message}",
+                    "Error updating training: ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
             }

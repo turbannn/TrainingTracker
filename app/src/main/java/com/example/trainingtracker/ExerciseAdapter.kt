@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingtracker.databinding.ItemExerciseBinding
 
 /**
- * Data class to hold exercise with muscle category
+ * Data class to hold exercise with type
  */
 data class ExerciseWithCategory(
     val exercise: Exercise,
-    val category: MuscleCategory
+    val category: ExerciseType
 )
 
 /**

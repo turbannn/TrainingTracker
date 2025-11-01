@@ -12,7 +12,8 @@ import java.util.Locale
 data class Training(
     @DocumentId
     val id: String = "",
-    val isComplete: Boolean = false,
+    val name: String = "",                      // Name of the training
+    val complete: Boolean = false,              // Completion status
     val trainingDate: Timestamp = Timestamp.now(),
     val exercises: List<Exercise> = emptyList(),
     val userId: String = ""  // To associate training with a user
@@ -41,7 +42,7 @@ data class Training(
     /**
      * Returns completion status as string
      */
-    fun getStatusText(): String = if (isComplete) "Completed" else "In Progress"
+    fun getStatusText(): String = if (complete) "Completed" else "In Progress"
     
     /**
      * Calculates total duration of all exercises (if available)
@@ -73,13 +74,13 @@ data class Training(
      * Creates a copy with updated completion status
      */
     fun markAsComplete(): Training {
-        return this.copy(isComplete = true)
+        return this.copy(complete = true)
     }
     
     /**
      * Creates a copy with updated completion status
      */
     fun markAsIncomplete(): Training {
-        return this.copy(isComplete = false)
+        return this.copy(complete = false)
     }
 }

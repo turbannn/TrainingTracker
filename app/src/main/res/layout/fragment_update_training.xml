@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddTrainingFragment">
+    tools:context=".UpdateTrainingFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Training Date Input -->
+            <!-- Training Date Input (allows past dates) -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textinput_training_date"
                 android:layout_width="0dp"
@@ -112,12 +112,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_save_training"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Save Training"
+                android:text="Update Training"
                 android:textAllCaps="false"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"

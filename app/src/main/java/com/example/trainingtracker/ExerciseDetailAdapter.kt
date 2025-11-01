@@ -34,8 +34,13 @@ class ExerciseDetailAdapter : ListAdapter<Exercise, ExerciseDetailAdapter.Exerci
                 // Set exercise name with number
                 textviewExerciseName.text = "$position. ${exercise.name}"
                 
-                // Set exercise details
-                textviewExerciseDetails.text = exercise.getFormattedDetails()
+                // Set exercise type and details
+                val typeAndDetails = if (exercise.type.isNotEmpty()) {
+                    "${exercise.type} | ${exercise.getFormattedDetails()}"
+                } else {
+                    exercise.getFormattedDetails()
+                }
+                textviewExerciseDetails.text = typeAndDetails
             }
         }
     }

@@ -56,15 +56,22 @@ class TrainingDetailFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        // Back button
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        
         // Toggle complete button
         binding.buttonToggleComplete.setOnClickListener {
             toggleTrainingComplete()
         }
+        
+        // Update training button
+        binding.buttonUpdateTraining.setOnClickListener {
+            navigateToUpdateTraining()
+        }
+    }
+
+    private fun navigateToUpdateTraining() {
+        val bundle = Bundle().apply {
+            putString("trainingId", trainingId)
+        }
+        findNavController().navigate(R.id.UpdateTrainingFragment, bundle)
     }
 
     private fun loadTraining() {
@@ -106,6 +113,9 @@ class TrainingDetailFragment : Fragment() {
 
     private fun displayTraining(training: Training) {
         with(binding) {
+            // Display training name
+            textviewTrainingName.text = training.name
+            
             // Display date
             textviewDate.text = training.getFormattedDate()
             
@@ -122,7 +132,7 @@ class TrainingDetailFragment : Fragment() {
             exerciseAdapter.submitList(training.exercises)
             
             // Update button text
-            buttonToggleComplete.text = if (training.isComplete) {
+            buttonToggleComplete.text = if (training.complete) {
                 "Mark as Incomplete"
             } else {
                 "Mark as Complete"
@@ -132,14 +142,14 @@ class TrainingDetailFragment : Fragment() {
 
     private fun toggleTrainingComplete() {
         val training = currentTraining ?: return
-        val newStatus = !training.isComplete
+        val newStatus = !training.complete
         
         if (trainingId == null) return
         
         // Update in Firestore
         firestore.collection("trainings")
             .document(trainingId!!)
-            .update("isComplete", newStatus)
+            .update("complete", newStatus)
             .addOnSuccessListener {
                 val message = if (newStatus) "Training marked as complete!" else "Training marked as incomplete!"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

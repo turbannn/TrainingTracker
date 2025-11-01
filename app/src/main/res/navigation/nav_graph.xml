@@ -78,6 +78,21 @@
         <argument
             android:name="trainingId"
             app:argType="string" />
+        
+        <action
+            android:id="@+id/action_TrainingDetailFragment_to_UpdateTrainingFragment"
+            app:destination="@id/UpdateTrainingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UpdateTrainingFragment"
+        android:name="com.example.trainingtracker.UpdateTrainingFragment"
+        android:label="Update Training"
+        tools:layout="@layout/fragment_update_training">
+        
+        <argument
+            android:name="trainingId"
+            app:argType="string" />
     </fragment>
 
     <fragment

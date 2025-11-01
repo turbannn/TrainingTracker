@@ -47,9 +47,14 @@ class TrainingsListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        trainingAdapter = TrainingAdapter { training ->
-            onTrainingClicked(training)
-        }
+        trainingAdapter = TrainingAdapter(
+            onTrainingClick = { training ->
+                onTrainingClicked(training)
+            },
+            onDeleteClick = { training ->
+                onDeleteTraining(training)
+            }
+        )
         binding.recyclerviewTrainings.adapter = trainingAdapter
     }
 
@@ -114,6 +119,40 @@ class TrainingsListFragment : Fragment() {
             putString("trainingId", training.id)
         }
         findNavController().navigate(R.id.TrainingDetailFragment, bundle)
+    }
+
+    private fun onDeleteTraining(training: Training) {
+        // Show confirmation dialog
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Delete Training")
+            .setMessage("Are you sure to delete?")
+            .setPositiveButton("Delete") { _, _ ->
+                deleteTrainingFromFirestore(training)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun deleteTrainingFromFirestore(training: Training) {
+        training.id?.let { trainingId ->
+            firestore.collection("trainings")
+                .document(trainingId)
+                .delete()
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Training deleted",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .addOnFailureListener { error ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Error deleting training: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
     }
 
     private fun showLoading() {

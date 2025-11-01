@@ -11,7 +11,8 @@ import com.example.trainingtracker.databinding.ItemTrainingBinding
  * Adapter for displaying trainings in RecyclerView
  */
 class TrainingAdapter(
-    private val onTrainingClick: (Training) -> Unit
+    private val onTrainingClick: (Training) -> Unit,
+    private val onDeleteClick: (Training) -> Unit
 ) : ListAdapter<Training, TrainingAdapter.TrainingViewHolder>(TrainingDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
@@ -33,8 +34,8 @@ class TrainingAdapter(
 
         fun bind(training: Training) {
             with(binding) {
-                // Set date
-                textviewDate.text = training.getFormattedDate()
+                // Set name and date
+                textviewDate.text = "${training.name}, ${training.getFormattedDate()}"
                 
                 // Set status
                 textviewStatus.text = training.getStatusText()
@@ -51,7 +52,7 @@ class TrainingAdapter(
                 textviewDuration.text = training.getFormattedDuration()
                 
                 // Set status icon color based on completion
-                val iconTint = if (training.isComplete) {
+                val iconTint = if (training.complete) {
                     android.R.color.holo_green_dark
                 } else {
                     android.R.color.holo_orange_dark
@@ -63,6 +64,11 @@ class TrainingAdapter(
                 // Set click listener
                 root.setOnClickListener {
                     onTrainingClick(training)
+                }
+                
+                // Set delete button listener
+                buttonDelete.setOnClickListener {
+                    onDeleteClick(training)
                 }
             }
         }

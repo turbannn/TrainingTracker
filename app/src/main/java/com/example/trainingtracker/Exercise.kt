@@ -9,9 +9,10 @@ import com.google.firebase.firestore.DocumentId
  */
 data class Exercise(
     val name: String = "",
-    val duration: Int? = null,           // Duration in seconds (nullable)
-    val sets: Int? = null,               // Number of sets (nullable)
-    val repetitions: List<Int>? = null   // Array of repetitions per set (nullable)
+    val type: String = "",               // Exercise type (e.g., "Chest", "Treadmill")
+    val duration: Int? = null,           // Duration in seconds (nullable, for cardio)
+    val sets: Int? = null,               // Number of sets (nullable, for strength)
+    val repetitions: List<Int>? = null   // Array of repetitions per set (nullable, for strength)
 ) {
     /**
      * Validates that repetitions array size matches sets count

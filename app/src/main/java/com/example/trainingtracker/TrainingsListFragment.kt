@@ -1,6 +1,7 @@
 package com.example.trainingtracker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,19 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.trainingtracker.databinding.FragmentTrainingsListBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * Trainings List Fragment - displays list of user's trainings
  */
 class TrainingsListFragment : Fragment() {
+
+    companion object {
+        private const val TAG = "TrainingsListFragment"
+    }
 
     private var _binding: FragmentTrainingsListBinding? = null
     private val binding get() = _binding!!
@@ -21,6 +30,9 @@ class TrainingsListFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var trainingAdapter: TrainingAdapter
     private var trainingsListener: com.google.firebase.firestore.ListenerRegistration? = null
+    
+    private val calendar = Calendar.getInstance()
+    private val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +51,41 @@ class TrainingsListFragment : Fragment() {
         // Setup RecyclerView
         setupRecyclerView()
         
+        // Setup month navigation
+        setupMonthNavigation()
+        
         // Setup FAB
         setupFab()
         
-        // Load trainings
+        // Load trainings for current month
+        updateMonthDisplay()
         loadTrainings()
+    }
+
+    private fun setupMonthNavigation() {
+        Log.d(TAG, "Setting up month navigation")
+        
+        // Previous month button
+        binding.buttonPrevMonth.setOnClickListener {
+            calendar.add(Calendar.MONTH, -1)
+            Log.d(TAG, "Previous month clicked, now showing: ${monthYearFormat.format(calendar.time)}")
+            updateMonthDisplay()
+            loadTrainings()
+        }
+        
+        // Next month button
+        binding.buttonNextMonth.setOnClickListener {
+            calendar.add(Calendar.MONTH, 1)
+            Log.d(TAG, "Next month clicked, now showing: ${monthYearFormat.format(calendar.time)}")
+            updateMonthDisplay()
+            loadTrainings()
+        }
+    }
+
+    private fun updateMonthDisplay() {
+        val displayText = monthYearFormat.format(calendar.time)
+        binding.textviewCurrentMonth.text = displayText
+        Log.d(TAG, "Month display updated to: $displayText")
     }
 
     private fun setupRecyclerView() {
@@ -69,6 +111,7 @@ class TrainingsListFragment : Fragment() {
         val userId = UserSession.getUserId()
         
         if (userId == null) {
+            Log.e(TAG, "User ID is null, cannot load trainings")
             Toast.makeText(
                 requireContext(),
                 "Please sign in to view trainings",
@@ -78,20 +121,29 @@ class TrainingsListFragment : Fragment() {
             return
         }
         
+        Log.d(TAG, "Loading trainings for user: $userId")
+        
         // Show loading
         showLoading()
         
-        // Load trainings from Firestore
+        // Remove previous listener if exists
+        trainingsListener?.remove()
+        
+        // Load ALL trainings and filter in code
         trainingsListener = firestore.collection("trainings")
             .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshot, error ->
                 // Check if view is still alive
-                if (_binding == null) return@addSnapshotListener
+                if (_binding == null) {
+                    Log.w(TAG, "Binding is null, skipping update")
+                    return@addSnapshotListener
+                }
                 
                 // Hide loading
                 hideLoading()
                 
                 if (error != null) {
+                    Log.e(TAG, "Error loading trainings", error)
                     Toast.makeText(
                         requireContext(),
                         "Error loading trainings: ${error.message}",
@@ -101,9 +153,40 @@ class TrainingsListFragment : Fragment() {
                     return@addSnapshotListener
                 }
                 
+                Log.d(TAG, "Received ${snapshot?.documents?.size ?: 0} trainings from Firestore")
+                
+                // Get selected month and year
+                val selectedYear = calendar.get(Calendar.YEAR)
+                val selectedMonth = calendar.get(Calendar.MONTH)
+                
+                Log.d(TAG, "Filtering for year: $selectedYear, month: $selectedMonth")
+                
+                // Filter trainings by selected month
                 val trainings = snapshot?.documents?.mapNotNull { document ->
-                    document.toObject(Training::class.java)
+                    try {
+                        document.toObject(Training::class.java)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error parsing training document: ${document.id}", e)
+                        null
+                    }
+                }?.filter { training ->
+                    training.trainingDate?.let { timestamp ->
+                        val trainingCal = Calendar.getInstance().apply {
+                            time = timestamp.toDate()
+                        }
+                        val trainingYear = trainingCal.get(Calendar.YEAR)
+                        val trainingMonth = trainingCal.get(Calendar.MONTH)
+                        
+                        val matches = trainingYear == selectedYear && trainingMonth == selectedMonth
+                        
+                        Log.d(TAG, "Training '${training.name}' date: ${timestamp.toDate()}, " +
+                                "year: $trainingYear, month: $trainingMonth, matches: $matches")
+                        
+                        matches
+                    } ?: false
                 }?.sortedByDescending { it.trainingDate } ?: emptyList()
+                
+                Log.d(TAG, "Filtered to ${trainings.size} trainings for selected month")
                 
                 if (trainings.isEmpty()) {
                     showEmptyState()

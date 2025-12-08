@@ -19,7 +19,7 @@
             android:layout_height="120dp"
             android:layout_marginTop="32dp"
             android:contentDescription="@string/user_profile"
-            android:src="@android:drawable/ic_menu_myplaces"
+            android:src="@drawable/ic_profile"
             android:tint="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

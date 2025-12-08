@@ -13,10 +13,18 @@
 
         <action
             android:id="@+id/action_WelcomeFragment_to_SignInFragment"
-            app:destination="@id/SignInFragment" />
+            app:destination="@id/SignInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_WelcomeFragment_to_SignUpFragment"
-            app:destination="@id/SignUpFragment" />
+            app:destination="@id/SignUpFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -27,12 +35,18 @@
 
         <action
             android:id="@+id/action_SignInFragment_to_SignUpFragment"
-            app:destination="@id/SignUpFragment" />
+            app:destination="@id/SignUpFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_SignInFragment_to_TrainingsListFragment"
             app:destination="@id/TrainingsListFragment"
             app:popUpTo="@id/WelcomeFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -43,12 +57,18 @@
 
         <action
             android:id="@+id/action_SignUpFragment_to_SignInFragment"
-            app:destination="@id/SignInFragment" />
+            app:destination="@id/SignInFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_SignUpFragment_to_TrainingsListFragment"
             app:destination="@id/TrainingsListFragment"
             app:popUpTo="@id/WelcomeFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <!-- Main app fragments with bottom navigation -->
@@ -60,7 +80,11 @@
         
         <action
             android:id="@+id/action_TrainingsListFragment_to_AddTrainingFragment"
-            app:destination="@id/AddTrainingFragment" />
+            app:destination="@id/AddTrainingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -81,7 +105,11 @@
         
         <action
             android:id="@+id/action_TrainingDetailFragment_to_UpdateTrainingFragment"
-            app:destination="@id/UpdateTrainingFragment" />
+            app:destination="@id/UpdateTrainingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -111,7 +139,9 @@
             android:id="@+id/action_UserProfileFragment_to_WelcomeFragment"
             app:destination="@id/WelcomeFragment"
             app:popUpTo="@id/WelcomeFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
 </navigation>
